@@ -76,6 +76,17 @@ static int skip() {
 	return c;
 }
 
+static int keyword(char *s) {
+	switch (s[0]) {
+		case 'p':
+			if (!strcmp(s, "print"))
+				return T_PRINT;
+			break;
+	}
+
+	return 0;
+}
+
 //get next character (not whitespace) and process as a token
 //if a digit is encountered, scan the integer (will process multiple tokens)
 int scan(struct token* t) {
@@ -97,14 +108,24 @@ int scan(struct token* t) {
 		case '/':
 			t->token = T_SLASH;
 			break;
-		//case ';':
-		//	t->token = T_SEMI;
-		//	break;
+		case ';':
+			t->token = T_SEMI;
+			break;
 		default:
 			if (isdigit(c)) {
 				t->intvalue = scanint(c);
 				t->token = T_INTLIT;
 				break;
+			} else if (isalpha(c) || c == '_') {
+				scanident(c, Text, TEXTLEN);
+				int tokentype;
+				if (tokentype = keyword(Text)) {
+					t->token = tokentype;
+					break;
+				}
+
+				printf("Unrecognized symbol %s on line %d\n", Text, lineNo);
+				exit(1);
 			}
 
 			printf("Unrecognized character %c on line %d\n", c, lineNo);

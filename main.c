@@ -48,9 +48,13 @@ int main(int argc, char **argv) {
 
 //	scanfile();
 	scan(&cur_token);			// Get the first token from the input
-  	struct ASTnode* n = binexpr(0);		// Parse the expression in the file
-  	printf("%d\n", interpretAST(n));	
-	generatecode(n);
+  	//struct ASTnode* n = binexpr(0);		// Parse the expression in the file
+  	//printf("%d\n", interpretAST(n));	
+//	generatecode(n);
+	genpreamble();
+	statements();
+	genpostamble();
+
 	fclose(out_file);
 	return 0;
 }

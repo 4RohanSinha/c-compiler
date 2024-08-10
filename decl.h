@@ -21,3 +21,8 @@ int cgsub(int r1, int r2);
 int cgmul(int r1, int r2);
 int cgdiv(int r1, int r2);
 void cgprintint(int r);
+void match(int, char*);
+void semi();
+void genpreamble();
+void genpostamble();
+void statements();

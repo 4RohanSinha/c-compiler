@@ -4,6 +4,28 @@
 #include "decl.h"
 #include "compiler_info.h"
 
+void genpreamble() { cgpreamble(); }
+void genpostamble() { cgpostamble(); }
+void genfreeregs() { freeall_registers(); }
+void genprintint(int reg) { cgprintint(reg); }
+
+void statements() {
+	struct ASTnode* tree;
+	int reg;
+
+	while (1) {
+		match(T_PRINT, "print");
+
+		tree = binexpr(0);
+		reg = genAST(tree);
+		genprintint(reg);
+		genfreeregs();
+
+		semi();
+		if (cur_token.token == T_EOF) return;
+	}
+}
+
 int genAST(struct ASTnode *n) {
 	int leftreg, rightreg;
 

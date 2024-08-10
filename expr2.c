@@ -69,7 +69,8 @@ struct ASTnode* binexpr(int ptp) {
 	tokentype = cur_token.token;
 
 	//if following token is EOF, return just left
-	if (tokentype == T_EOF) return left;
+	//if (tokentype == T_EOF) return left;
+	if (tokentype == T_SEMI) return left;
 
 	//consider binexpr to be 5 * 3 + 2 * 6.
 	//we'll continue the OG while loop until the end (input ptp = 0)
@@ -107,7 +108,8 @@ struct ASTnode* binexpr(int ptp) {
 
 		//update current token - if it's EOF, break out
 		tokentype = cur_token.token;
-		if (tokentype == T_EOF) return left;
+		//if (tokentype == T_EOF) return left;
+		if (tokentype == T_SEMI) return left;
 	}
 	//return tree when precedence is same or lower
 	return left;
