@@ -1,2 +1,6 @@
 scanner
 *.dYSM
+old_inputs
+input*
+*.s
+*.out

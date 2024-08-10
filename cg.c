@@ -68,7 +68,7 @@ void cgpostamble() {
 	out_file);
 }
 
-int cgload(int value) {
+int cgloadint(int value) {
 	int r = alloc_register();
 	fprintf(out_file, "\tmovq\t$%d, %s\n", value, reglist[r]);
 	return r;
@@ -110,3 +110,17 @@ void cgprintint(int r) {
 	free_register(r);
 }
 
+int cgloadglob(char* identifier) {
+	int r = alloc_register();
+	fprintf(out_file, "\tmovq\t%s(\%%rip), %s\n", identifier, reglist[r]);
+	return r;
+}
+
+int cgstorglob(int r, char* identifier) {
+	fprintf(out_file, "\tmovq\t%s, %s(\%%rip)\n", reglist[r], identifier);
+	return r;
+}
+
+void cgglobsym(char* sym) {
+	fprintf(out_file, "\t.comm\t%s,8,8\n", sym);
+}

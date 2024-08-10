@@ -18,7 +18,7 @@ struct ASTnode *mkastnode(int op, struct ASTnode* left, struct ASTnode* right, i
 	n->op = op;
 	n->left = left;
 	n->right = right;
-	n->intvalue = intvalue;
+	n->v.intvalue = intvalue;
 	return n;
 }
 
@@ -48,16 +48,27 @@ int arithop(int tok) {
 
 struct ASTnode *constructLiteralNode() {
 	struct ASTnode* n;
+	int id;
 	
 	switch (cur_token.token) {
 		case T_INTLIT:
 			n = mkastleaf(A_INTLIT, cur_token.intvalue);
-			scan(&cur_token);
-			return n;
+			break;
+		case T_IDENT:
+			id = findglob(Text);
+			if (id == -1) fatals("Unknown variable", Text);
+
+			n = mkastleaf(A_IDENT, id);
+			break;
+			
 		default:
 			fprintf(stderr, "syntax error on line %d\n", lineNo);
 			exit(1);
 	}
+	
+	scan(&cur_token);
+
+	return n;
 }
 
 struct ASTnode* constructBinExp() {

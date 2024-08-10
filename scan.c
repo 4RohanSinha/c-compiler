@@ -82,6 +82,10 @@ static int keyword(char *s) {
 			if (!strcmp(s, "print"))
 				return T_PRINT;
 			break;
+		case 'i':
+			if (!strcmp(s, "int"))
+				return T_INT;
+			break;
 	}
 
 	return 0;
@@ -111,6 +115,9 @@ int scan(struct token* t) {
 		case ';':
 			t->token = T_SEMI;
 			break;
+		case '=':
+			t->token = T_EQUALS;
+			break;
 		default:
 			if (isdigit(c)) {
 				t->intvalue = scanint(c);
@@ -124,8 +131,8 @@ int scan(struct token* t) {
 					break;
 				}
 
-				printf("Unrecognized symbol %s on line %d\n", Text, lineNo);
-				exit(1);
+				t->token = T_IDENT;
+				break;
 			}
 
 			printf("Unrecognized character %c on line %d\n", c, lineNo);
